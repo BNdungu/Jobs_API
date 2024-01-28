@@ -6,12 +6,12 @@ const bcrypt = require('bcryptjs')
 
 const register = async (req, res) => {
     const result = await users.create({ ...req.body})
+    console.log(result.genToken())
+    const token = result.genToken()
     res.status(StatusCodes.CREATED).json({
         status: "success",
-        results: result.length,
         data: {
-            token: result.genToken(),
-            name: result.getName()
+            token
         }
     })
 }

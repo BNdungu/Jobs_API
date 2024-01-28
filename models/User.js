@@ -28,8 +28,9 @@ users.pre('save', async function(next) {
     next()
 })
 
+
 users.methods.genToken = function () {
-    return jwt.sign({userId: this._id, name: this.name}, 'JWT-secret', {expiresIn: '30d'})
+    return jwt.sign({userId: this._id, name: this.name}, process.env.JWT_secret, {expiresIn: process.env.JWT_keepAlive})
 }
 
 module.exports = mongoose.model('Users', users)
