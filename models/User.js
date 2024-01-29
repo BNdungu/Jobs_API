@@ -33,4 +33,9 @@ users.methods.genToken = function () {
     return jwt.sign({userId: this._id, name: this.name}, process.env.JWT_secret, {expiresIn: process.env.JWT_keepAlive})
 }
 
+users.methods.comparePassword = async function (password) {
+    const isMatch = await bcrypt.compare(password, this.password)
+    return isMatch
+}
+
 module.exports = mongoose.model('Users', users)

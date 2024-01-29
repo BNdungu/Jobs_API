@@ -28,7 +28,8 @@ const login = async (req, res) => {
 
     const user = await users.findOne({email})
 
-    if (!user) {
+    const isPasswordCorrect = await user.comparePassword(password)
+    if (!user || !isPasswordCorrect ) {
         throw new UnauthenticatedError('User does not exist')
     }
 
