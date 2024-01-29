@@ -1,11 +1,16 @@
+const {StatusCodes} = require('http-status-codes')
+
 const getAllJobs = (req, res) => {
-    res.send('Get all Jobs')
+    res.status(StatusCodes.OK).json({
+        status: 'success',
+        user: req.user
+    })
+
 }
 
 const getJob = (req, res) => {
-    res.send('get Job')
+    res.send('Get JJob')
 }
-
 const updateJob = (req, res) => {
     res.send('update Job')
 }
