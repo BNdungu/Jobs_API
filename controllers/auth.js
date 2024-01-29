@@ -1,7 +1,7 @@
 const users = require('../models/User')
 const {StatusCodes} = require('http-status-codes')
 const jwt = require('jsonwebtoken')
-const {BadRequestError} = require('../errors')
+const {BadRequestError,UnauthenticatedError} = require('../errors')
 const bcrypt = require('bcryptjs')
 
 const register = async (req, res) => {
@@ -10,14 +10,38 @@ const register = async (req, res) => {
     const token = result.genToken()
     res.status(StatusCodes.CREATED).json({
         status: "success",
+        users: {
+            name: result.name
+        },
         data: {
             token
         }
     })
 }
 
-const login = (req, res) => {
-    res.send('login user')
+const login = async (req, res) => {
+    const {email, password} = req.body
+
+    if(!email || !password){
+        throw new BadRequestError('Please Provide all Login Credentials')
+    }
+
+    const user = await users.findOne({email})
+
+    if (!user) {
+        throw new UnauthenticatedError('User does not exist')
+    }
+
+    const token = user.genToken()
+
+    res.status(StatusCodes.OK).json({
+        status: 'success',
+        user: {
+            name: user.name
+        },
+        token
+    })
+
 }
 
 module.exports = {
