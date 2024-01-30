@@ -1,12 +1,13 @@
 const {StatusCodes} = require('http-status-codes')
 const jobs = require('../models/Job')
 
-const getAllJobs = (req, res) => {
+const getAllJobs = async (req, res) => {
+    const result = await jobs.find({createdBy: req.user.userID}).sort('-createdAt')    
     res.status(StatusCodes.OK).json({
         status: 'success',
-        user: req.user
+        results: result.length,
+        result
     })
-
 }
 
 const getJob = (req, res) => {
@@ -22,7 +23,6 @@ const deleteJob = (req, res) => {
 
 const createJob = async (req, res) => {
     req.body.createdBy = req.user.userID
-    console.log(req.body);
     const job = await jobs.create(req.body)
     res.status(StatusCodes.CREATED).json({
         status: 'success',
