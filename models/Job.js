@@ -21,10 +21,10 @@ const jobsSchema = new mongoose.Schema({
 
     createdBy: {
         type: mongoose.Types.ObjectId,
-        ref: Users,
+        ref: 'Users',
         required: [true, 'Please provide the user']
     }
 
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('Jobs', jobsSchema)

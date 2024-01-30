@@ -1,4 +1,5 @@
 const {StatusCodes} = require('http-status-codes')
+const jobs = require('../models/Job')
 
 const getAllJobs = (req, res) => {
     res.status(StatusCodes.OK).json({
@@ -19,8 +20,14 @@ const deleteJob = (req, res) => {
     res.send('delete Job')
 }
 
-const createJob = (req, res) => {
-    res.send('create Job')
+const createJob = async (req, res) => {
+    req.body.createdBy = req.user.userID
+    console.log(req.body);
+    const job = await jobs.create(req.body)
+    res.status(StatusCodes.CREATED).json({
+        status: 'success',
+        job
+    })
 }
 
 module.exports = {
