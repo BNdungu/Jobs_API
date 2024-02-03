@@ -25,6 +25,8 @@ app.use(rateLimiter({
   max: 100
 }))
 app.use(express.json());
+
+//security
 app.use(helmet())
 app.use(cors())
 app.use(xss())
